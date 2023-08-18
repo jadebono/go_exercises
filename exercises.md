@@ -6,11 +6,6 @@ Adapted from the [Python Exercises of Jeffrey Hu](https://github.com/zhiwehu/Pyt
 Adapted by: [Joseph Anthony Debono](https://github.com/jadebono).
 [Email Joseph](joe@jadebono.com)
 
-These are the exercises with the standard solutions. Class-based (OOP) solutions are kept at a minimum and only as the exercise at that point.
-
-1. The README file: [README.md](./README.md);
-1. Object Oriented Programming solutions: [OOP exercises and solutions](./OOP.md)
-
 ---
 
 ## Question 1

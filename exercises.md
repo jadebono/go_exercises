@@ -6344,8 +6344,224 @@ func main() {
 
 ## Question 99
 
-```golang
+Question:
 
+You're tasked to manage a small local library. Your program should be able to:
+
+1. Add a book with its title and author.
+1. Remove a book using its title.
+1. List all the books in the library.
+1. Search for a book using its title.
+
+Suggested functions:
+
+- func addBook(title string, author string) bool: Adds a book with the given title and author. Returns true if the operation is successful, otherwise false (e.g., if the book already exists).
+- func removeBook(title string) bool: Removes a book with the given title. Returns true if the operation is successful, otherwise false (e.g., if the book doesn't exist).
+- func listBooks() []string: Returns a slice of strings containing the titles of all the books in the library.
+- func searchBook(title string) (string, bool): Searches for a book with the given title. Returns the author's name if the book is found and true, otherwise an empty string and false.
+
+Hints:
+
+1. You can assume that book titles are unique;
+1. Book titles and author names are case-sensitive;
+1. The library starts empty;
+1. Data Structure: Consider using a map to store the books, with the book title as the key and the author's name as the value;
+1. Adding a Book: Check if the title already exists in the map. If not, add it;
+1. Removing a Book: Check if the title exists in the map. If it does, remove it;
+1. Listing Books: Go through the keys of the map and append them to a slice;
+1. Searching for a Book: Check if the title exists in the map. If it does, return the corresponding author's name.
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+// Map to store the books, with the book title as the key and the author's name as the value.
+var library = make(map[string]string)
+
+// Adds a book with the given title and author.
+func addBook(title string, author string) bool {
+	// Check if the title already exists in the map
+	if _, exists := library[title]; exists {
+		return false
+	}
+	library[title] = author
+	return true
+}
+
+// Removes a book with the given title.
+func removeBook(title string) bool {
+	// Check if the title exists in the map
+	if _, exists := library[title]; !exists {
+		return false
+	}
+	delete(library, title)
+	return true
+}
+
+// Returns a slice of strings containing the titles of all the books in the library.
+func listBooks() []string {
+	var titles []string
+	for title := range library {
+		titles = append(titles, title)
+	}
+	return titles
+}
+
+// Searches for a book with the given title.
+func searchBook(title string) (string, bool) {
+	// Check if the title exists in the map
+	author, exists := library[title]
+	return author, exists
+}
+
+func main() {
+	// Test the library system
+	addBook("Iliad", "Homer")
+	addBook("The Republic", "Marcus Tullius Cicero")
+	addBook("Divina Commedia", "Dante Alighieri")
+
+	fmt.Println("Books in Library:", listBooks())
+
+	author, found := searchBook("Iliad")
+	if found {
+		fmt.Println("Author of 'Iliad':", author)
+	}
+
+	success := removeBook("Iliad")
+	if success {
+		fmt.Println("'Iliad' removed.")
+	} else {
+		fmt.Println("Failed to remove 'Iliad'.")
+	}
+
+	fmt.Println("Books in Library after removal:", listBooks())
+}
+
+```
+
+---
+
+## Question 100
+
+Question:
+
+Please create a system that can schedule and manage events. Your program should be able to:
+
+1. Add an event with its name, date, and description;
+1. Remove an event using its name;
+1. List all the events;
+1. Search for an event using its name;
+
+Suggested functions:
+
+- func addEvent(name string, date string, description string) bool: Adds an event with the given name, date, and description. Returns true if the operation is successful, otherwise false (e.g., if the event already exists);
+- func removeEvent(name string) bool: Removes an event with the given name. Returns true if the operation is successful, otherwise false (e.g., if the event doesn't exist);
+- func listEvents() []Event: Returns a slice of events;
+- func searchEvent(name string) (Event, bool): Searches for an event with the given name. Returns the event if found and true, otherwise an empty event and false;
+
+Event Structure:
+
+```golang
+type Event struct {
+	Name        string
+	Date        string
+	Description string
+}
+```
+
+Hints:
+
+1. You can assume that event names are unique;
+1. Event names, dates, and descriptions are case-sensitive;
+1. The scheduler starts empty;
+1. Data Structure: Consider using a map to store the events, with the event name as the key and the Event struct as the value;
+1. Adding an Event: Check if the name already exists in the map. If not, add it;
+1. Removing an Event: Check if the name exists in the map. If it does, remove it;
+1. Listing Events: Go through the values of the map and append them to a slice;
+1. Searching for an Event: Check if the name exists in the map. If it does, return the corresponding event.
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+// Event structure to store the details of an event
+type Event struct {
+	Name        string
+	Date        string
+	Description string
+}
+
+// Map to store the events, with the event name as the key and the Event struct as the value.
+var events = make(map[string]Event)
+
+// Adds an event with the given name, date, and description.
+func addEvent(name string, date string, description string) bool {
+	// Check if the name already exists in the map
+	if _, exists := events[name]; exists {
+		return false
+	}
+	events[name] = Event{Name: name, Date: date, Description: description}
+	return true
+}
+
+// Removes an event with the given name.
+func removeEvent(name string) bool {
+	// Check if the name exists in the map
+	if _, exists := events[name]; !exists {
+		return false
+	}
+	delete(events, name)
+	return true
+}
+
+// Returns a slice of events.
+func listEvents() []Event {
+	var allEvents []Event
+	for _, event := range events {
+		allEvents = append(allEvents, event)
+	}
+	return allEvents
+}
+
+// Searches for an event with the given name.
+func searchEvent(name string) (Event, bool) {
+	// Check if the name exists in the map
+	event, exists := events[name]
+	return event, exists
+}
+
+func main() {
+	// Test the event scheduler
+	addEvent("Conference", "2023-09-01", "Tech conference in London.")
+	addEvent("Webinar", "2023-09-10", "Online webinar about Go programming.")
+	addEvent("Meetup", "2023-09-20", "Local meetup about cloud computing.")
+
+	fmt.Println("All Events:")
+	for _, event := range listEvents() {
+		fmt.Printf("Name: %s, Date: %s, Description: %s\n", event.Name, event.Date, event.Description)
+	}
+
+	searchedEvent, found := searchEvent("Webinar")
+	if found {
+		fmt.Printf("\nSearched Event - Name: %s, Date: %s, Description: %s\n", searchedEvent.Name, searchedEvent.Date, searchedEvent.Description)
+	}
+
+	success := removeEvent("Webinar")
+	if success {
+		fmt.Println("\n'Webinar' removed.")
+	}
+
+	fmt.Println("\nAll Events after removal:")
+	for _, event := range listEvents() {
+		fmt.Printf("Name: %s, Date: %s, Description: %s\n", event.Name, event.Date, event.Description)
+	}
+}
 ```
 
 ---
